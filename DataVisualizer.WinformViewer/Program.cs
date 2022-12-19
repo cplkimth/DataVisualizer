@@ -1,17 +1,18 @@
-namespace DataVisualizer.WinformViewer
+using DataVisualizer.WinformViewer.Forms;
+
+namespace DataVisualizer.WinformViewer;
+
+internal static class Program
 {
-    internal static class Program
+    [STAThread]
+    static void Main()
     {
-        [STAThread]
-        static void Main()
-        {
-            ApplicationConfiguration.Initialize();
+        ApplicationConfiguration.Initialize();
 
-            IsRunTime = true;
+        IsRunTime = true;
             
-            Application.Run(new Form1());
-        }
-
-        public static bool IsRunTime { get; set; }
+        Application.Run(new MainForm());
     }
+
+    public static bool IsRunTime { get; set; }
 }

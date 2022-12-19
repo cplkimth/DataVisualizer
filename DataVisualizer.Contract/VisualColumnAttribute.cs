@@ -2,7 +2,7 @@
 
 public class VisualColumnAttribute : Attribute
 {
-    public VisualColumnAttribute(int index = 0, string? format = null, int width = 0)
+    public VisualColumnAttribute(int index = 0, string format = "", int width = 0)
     {
         Index = index;
         Format = format;

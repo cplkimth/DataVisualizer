@@ -10,7 +10,7 @@ public class Visualizer
 {
     public const string Separator = "\n#Visualizer#\n";
 
-    public static void Serialzie<T>(IEnumerable<T> list, string rootPath)
+    public static string Serialzie<T>(IEnumerable<T> list, string rootPath)
     {
         var options = new JsonSerializerOptions {WriteIndented = true, IgnoreReadOnlyProperties = true};
 
@@ -21,13 +21,10 @@ public class Visualizer
 
         string json = metaJson + Separator + dataJson;
 
-        var directory = Path.Combine(rootPath, typeof(T).FullName!);
-        if (Directory.Exists(directory) == false)
-            Directory.CreateDirectory(directory);
-
-        // var path = Path.Combine(directory, $"{DateTime.Now:yyyyMMdd_HHmmss}.json");
-        var path = Path.Combine(directory, "Price.json");
+        var path = Path.Combine(rootPath, $"{typeof(T).FullName!}_{DateTime.Now:yyyyMMdd_HHmmss}.json");
         File.WriteAllText(path, json);
+
+        return path;
     }
 
     private static T? GetAttributeValue<T>(Type type, string memberName) where T : Attribute
