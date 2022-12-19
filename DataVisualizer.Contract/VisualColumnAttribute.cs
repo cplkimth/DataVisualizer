@@ -2,16 +2,16 @@
 
 public class VisualColumnAttribute : Attribute
 {
-    public VisualColumnAttribute(int index = 0, int width = 0, string format = "")
+    public VisualColumnAttribute(int index = 0, string? format = null, int width = 0)
     {
         Index = index;
-        Width = width;
         Format = format;
+        Width = width;
     }
 
     public int Index { get; init; }
+
+    public string? Format { get; init; }
     
     public int Width { get; init; }
-
-    public string Format { get; init; }
 }

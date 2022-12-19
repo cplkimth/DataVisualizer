@@ -1,10 +1,12 @@
 ﻿using System.Windows.Forms;
+using DataVisualizer.Contract;
+using System.Linq;
 
 namespace DataVisualizer.WinformViewer;
 
 public static class DataGridViewExtension
 {
-    public static void Initialize(this DataGridView grid, params ColumnInfo[] columnInfos)
+    public static void Initialize(this DataGridView grid, IEnumerable<VisualColumn> visualColumns)
     {
         grid.AllowUserToAddRows = false;
         grid.AllowUserToDeleteRows = false;
@@ -18,41 +20,56 @@ public static class DataGridViewExtension
         grid.MultiSelect = true;
 
         List<DataGridViewColumn> columns = new();
-        foreach (var columnInfo in columnInfos)
+        
+        visualColumns = visualColumns.OrderBy(x => x.DisplayIndex).ThenBy(x => x.FieldName);
+        foreach (var visualColumn in visualColumns)
         {
-            var column = CeateColumn(columnInfo);
+            var column = CeateColumn(visualColumn);
             columns.Add(column);
         }
 
         grid.Columns.AddRange(columns.ToArray());
     }
 
-    private static DataGridViewColumn CeateColumn(ColumnInfo columnInfo)
+    private static DataGridViewColumn CeateColumn(VisualColumn visualColumn)
     {
         DataGridViewCellStyle style = new DataGridViewCellStyle();
         
-        if (columnInfo.Format != null)
-            style.Format = columnInfo.Format;
+        if (visualColumn.Format != null)
+            style.Format = visualColumn.Format;
         style.NullValue = null;
 
-        DataGridViewColumn column = columnInfo.DataType == typeof(bool) ? new DataGridViewCheckBoxColumn() : new DataGridViewTextBoxColumn();
-        column.DataPropertyName = columnInfo.FieldName;
-        column.DefaultCellStyle = style;
-        column.HeaderText = columnInfo.FieldName;
-        column.ReadOnly = true;
+        DataGridViewColumn grdiColumn = visualColumn.ColumnType switch
+        {
+            ColumnType.Boolean => new DataGridViewCheckBoxColumn(),
+            _ => new DataGridViewTextBoxColumn()
+        };
+        grdiColumn.DataPropertyName = visualColumn.FieldName;
+        grdiColumn.DefaultCellStyle = style;
+        grdiColumn.HeaderText = visualColumn.FieldName;
+        grdiColumn.ReadOnly = true;
 
-        if (columnInfo.Width.HasValue)
-            column.Width = columnInfo.Width.Value;
+        if (visualColumn.Width.HasValue)
+            grdiColumn.Width = visualColumn.Width.Value;
 
-        if (columnInfo.DataType == typeof(string))
-            style.Alignment = DataGridViewContentAlignment.MiddleLeft;
-        else if (columnInfo.DataType == typeof(bool))
-            style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-        else
-            style.Alignment = DataGridViewContentAlignment.MiddleRight;
+        style.Alignment = visualColumn.ColumnType switch
+        {
+            ColumnType.Boolean => DataGridViewContentAlignment.MiddleCenter,
+            ColumnType.Byte => DataGridViewContentAlignment.MiddleRight,
+            ColumnType.SByte => DataGridViewContentAlignment.MiddleRight,
+            ColumnType.Single => DataGridViewContentAlignment.MiddleRight,
+            ColumnType.Double => DataGridViewContentAlignment.MiddleRight,
+            ColumnType.Int16 => DataGridViewContentAlignment.MiddleRight,
+            ColumnType.Int32 => DataGridViewContentAlignment.MiddleRight,
+            ColumnType.Int64 => DataGridViewContentAlignment.MiddleRight,
+            ColumnType.UInt16 => DataGridViewContentAlignment.MiddleRight,
+            ColumnType.UInt32 => DataGridViewContentAlignment.MiddleRight,
+            ColumnType.UInt64 => DataGridViewContentAlignment.MiddleRight,
+            _ => DataGridViewContentAlignment.MiddleLeft
+        };
 
-        column.SortMode = DataGridViewColumnSortMode.Automatic;
+        grdiColumn.SortMode = DataGridViewColumnSortMode.Automatic;
 
-        return column;
+        return grdiColumn;
     }
 }
