@@ -12,7 +12,7 @@ public class Visualizer
 
     public static string Serialzie<T>(IEnumerable<T> list, string rootPath)
     {
-        var options = new JsonSerializerOptions {WriteIndented = true, IgnoreReadOnlyProperties = true};
+        var options = new JsonSerializerOptions {WriteIndented = true, IgnoreReadOnlyProperties = false};
 
         List<VisualColumn> visualColumns = ExtractVisualColumns(typeof(T));
         string metaJson = JsonSerializer.Serialize(visualColumns, options);

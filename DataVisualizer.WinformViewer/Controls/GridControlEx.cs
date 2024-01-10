@@ -48,8 +48,8 @@ public class GridControlEx : GridControl, ILayout
     
         this.SaveLayout(containerForm, SaveColumnColors);
     }
-    
-    private void SaveColumnColors(string path)
+
+    public void SaveColumnColors(string path)
     {
         var colors = GridView.Columns.ToDictionary(x => x.Name, x => x.AppearanceHeader.BackColor.ToArgb());
     
@@ -63,8 +63,8 @@ public class GridControlEx : GridControl, ILayout
     
         this.RestoreLayout(containerForm, RestoreColumnColors);
     }
-    
-    private void RestoreColumnColors(string path)
+
+    public void RestoreColumnColors(string path)
     {
         // 알 수 없는 사각형이 그려지는 버그 있음
     
@@ -72,8 +72,8 @@ public class GridControlEx : GridControl, ILayout
         var colors = JsonSerializer.Deserialize<Dictionary<string, int>>(json);
     
         foreach (GridColumn column in GridView.Columns)
-            if (colors.ContainsKey(column.Name))
-                column.AppearanceHeader.BackColor = Color.FromArgb(colors[column.Name]);
+            if (colors.TryGetValue(column.Name, out var color))
+                column.AppearanceHeader.BackColor = Color.FromArgb(color);
     }
     #endregion
 

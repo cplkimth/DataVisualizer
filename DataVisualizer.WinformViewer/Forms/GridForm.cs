@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.IO;
 using DataVisualizer.Contract;
 using DataVisualizer.WinformViewer.Components;
+using DevExpress.Utils;
+using DevExpress.XtraBars.Docking2010.Views;
 using Newtonsoft.Json;
 #endregion
 
@@ -17,10 +19,11 @@ public partial class GridForm : RootForm
 
     public GridForm(string filePath) : this()
     {
-        _filePath = filePath;
+        FilePath = filePath;
 
         var fileName = Path.GetFileNameWithoutExtension(filePath);
         var tokens = fileName.Split("_");
+        TypeFullName = tokens[0];
         var typeName = tokens[0].Split(".")[^1];
         var time = tokens[^1];
         _text = $"{typeName}-{time}";
@@ -28,7 +31,8 @@ public partial class GridForm : RootForm
         grdList.Tag = tokens[0];
     }
 
-    private readonly string _filePath;
+    public string FilePath { get; }
+    public string TypeFullName { get; }
 
     private readonly string _text;
 
@@ -41,7 +45,7 @@ public partial class GridForm : RootForm
 
         Text = _text;
 
-        var json = File.ReadAllText(_filePath);
+        var json = File.ReadAllText(FilePath);
 
         var tokens = json.Split(Visualizer.Separator);
         var metaJson = tokens[0];
@@ -55,10 +59,32 @@ public partial class GridForm : RootForm
         bdsList.DataSource = list;
 
         grdList.LoadPreset();
+
+        if (File.Exists(LayoutPath))
+            RestoreGridLayout();
+    }
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        SaveGridLayout();
+
+        base.OnClosing(e);
     }
 
     private void btnClose_Click(object sender, EventArgs e)
     {
         Close();
+    }
+
+    private string LayoutPath => Path.Combine(MainForm.Instance.Folder, $"{TypeFullName}.xml");
+
+    public void SaveGridLayout()
+    {
+        grvList.SaveLayoutToXml(LayoutPath, OptionsLayoutBase.FullLayout);
+    }
+
+    public void RestoreGridLayout()
+    {
+        grvList.RestoreLayoutFromXml(LayoutPath, OptionsLayoutBase.FullLayout);
     }
 }

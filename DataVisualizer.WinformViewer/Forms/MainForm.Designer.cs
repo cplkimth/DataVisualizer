@@ -28,45 +28,44 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.fbdDialog = new DevExpress.XtraEditors.XtraFolderBrowserDialog(this.components);
-            this.fswWatcher = new System.IO.FileSystemWatcher();
-            this.xtraTabbedMdiManager1 = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.fswWatcher)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xtraTabbedMdiManager1)).BeginInit();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            fbdDialog = new DevExpress.XtraEditors.XtraFolderBrowserDialog(components);
+            fswWatcher = new System.IO.FileSystemWatcher();
+            xtraTabbedMdiManager1 = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(components);
+            ((System.ComponentModel.ISupportInitialize)fswWatcher).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)xtraTabbedMdiManager1).BeginInit();
+            SuspendLayout();
             // 
             // fbdDialog
             // 
-            this.fbdDialog.SelectedPath = "xtraFolderBrowserDialog1";
+            fbdDialog.SelectedPath = "xtraFolderBrowserDialog1";
             // 
             // fswWatcher
             // 
-            this.fswWatcher.EnableRaisingEvents = true;
-            this.fswWatcher.Filter = "*.json";
-            this.fswWatcher.SynchronizingObject = this;
-            this.fswWatcher.Created += new System.IO.FileSystemEventHandler(this.fswWatcher_Created);
+            fswWatcher.EnableRaisingEvents = true;
+            fswWatcher.Filter = "*.json";
+            fswWatcher.SynchronizingObject = this;
+            fswWatcher.Created += fswWatcher_Created;
             // 
             // xtraTabbedMdiManager1
             // 
-            this.xtraTabbedMdiManager1.ClosePageButtonShowMode = DevExpress.XtraTab.ClosePageButtonShowMode.InAllTabPageHeaders;
-            this.xtraTabbedMdiManager1.CloseTabOnMiddleClick = DevExpress.XtraTabbedMdi.CloseTabOnMiddleClick.OnMouseUp;
-            this.xtraTabbedMdiManager1.MdiParent = this;
+            xtraTabbedMdiManager1.ClosePageButtonShowMode = DevExpress.XtraTab.ClosePageButtonShowMode.InAllTabPageHeaders;
+            xtraTabbedMdiManager1.CloseTabOnMiddleClick = DevExpress.XtraTabbedMdi.CloseTabOnMiddleClick.OnMouseUp;
+            xtraTabbedMdiManager1.MdiParent = this;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1339, 861);
-            this.DoubleBuffered = true;
-            this.IsMdiContainer = true;
-            this.Name = "MainForm";
-            this.Text = "MainForm";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            ((System.ComponentModel.ISupportInitialize)(this.fswWatcher)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.xtraTabbedMdiManager1)).EndInit();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 12F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1339, 738);
+            DoubleBuffered = true;
+            IsMdiContainer = true;
+            Name = "MainForm";
+            Text = "DataVisualizer";
+            WindowState = FormWindowState.Maximized;
+            ((System.ComponentModel.ISupportInitialize)fswWatcher).EndInit();
+            ((System.ComponentModel.ISupportInitialize)xtraTabbedMdiManager1).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion

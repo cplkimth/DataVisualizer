@@ -11,7 +11,7 @@ internal static class Program
 
         IsRunTime = true;
             
-        Application.Run(new MainForm());
+        Application.Run(MainForm.Instance);
     }
 
     public static bool IsRunTime { get; set; }

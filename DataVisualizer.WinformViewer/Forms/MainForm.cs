@@ -7,12 +7,20 @@ namespace DataVisualizer.WinformViewer.Forms;
 
 public partial class MainForm : XtraForm
 {
-    public MainForm()
+    #region singleton
+
+    private static readonly Lazy<MainForm> _instance = new(() => new MainForm());
+
+    public static MainForm Instance => _instance.Value;
+
+    private MainForm()
     {
         InitializeComponent();
     }
 
-    private string _folder;
+    #endregion
+
+    public string Folder { get; private set; }
 
     protected override void OnShown(EventArgs e)
     {
@@ -22,24 +30,25 @@ public partial class MainForm : XtraForm
             return;
 
 #if DEBUG
-        _folder = @"D:\incoming\DataVisualizer";
+        Folder = @"D:\incoming\DataVisualizer";
 #else
-        if (fbdDialog.ShowDialog() == DialogResult.OK)
-        {
-            _folder = fbdDialog.SelectedPath;
-        }
-        else
-        {
-            Close();
-            return;
-        }
+Folder = @"D:\incoming\DataVisualizer";
+        // if (fbdDialog.ShowDialog() == DialogResult.OK)
+        // {
+        //     Folder = fbdDialog.SelectedPath;
+        // }
+        // else
+        // {
+        //     Close();
+        //     return;
+        // }
 #endif
 
         string? latestFile = GetLatestFile();
         if (latestFile != null)
             ShowFile(latestFile);
 
-        fswWatcher.Path = _folder;
+        fswWatcher.Path = Folder;
         fswWatcher.EnableRaisingEvents = true;
     }
 
@@ -52,9 +61,9 @@ public partial class MainForm : XtraForm
 
     private string? GetLatestFile()
     {
-        var directory = new DirectoryInfo(_folder);
+        var directory = new DirectoryInfo(Folder);
         var files = directory.GetFiles("*.json");
-        var latest = files.OrderByDescending(x => x.CreationTime).FirstOrDefault();
+        var latest = files.MaxBy(x => x.CreationTime);
         return latest?.FullName;
     }
 
