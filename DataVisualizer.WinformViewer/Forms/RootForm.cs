@@ -44,50 +44,12 @@ public partial class RootForm : XtraForm
 
         if (DesignMode || Program.IsRunTime == false)
             return;
-
-        RestoreChildrenLayout();   
     }
 
     protected override void OnClosing(CancelEventArgs e)
     {
-        SaveChildrenLayout();
-
         _presettables.Clear();
 
-        RemoveUserLayouts();
-
         base.OnClosing(e);
-    }
-
-    private void SaveChildrenLayout()
-    {
-        this.SuspendDrawing();
-
-        foreach (var item in _presettables.OfType<ILayout>())
-            item.SaveLayout(this);
-
-        this.ResumeDrawing();
-    }
-
-    private void RestoreChildrenLayout()
-    {
-        this.SuspendDrawing();
-
-        foreach (var item in _presettables.OfType<ILayout>())
-            item.RestoreLayout(this);
-
-        this.ResumeDrawing();
-    }
-
-    private void RemoveUserLayouts()
-    {
-        foreach (var guid in _guidsToDelete)
-        {
-            var files = Directory.GetFiles(WinformUtility.LayoutPath, "*.xml").Where(x => x.Contains(guid));
-            foreach (var file in files)
-                File.Delete(file);
-        }
-
-        _guidsToDelete.Clear();
     }
 }

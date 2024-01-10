@@ -10,6 +10,8 @@ public static class DataGridViewExtension
 {
     public static void Initialize(this GridControl grid, IEnumerable<VisualColumn> visualColumns)
     {
+        grid.BeginUpdate();
+
         GridView view = (GridView) grid.MainView;
         view.OptionsBehavior.Editable = false;
         view.OptionsView.ColumnAutoWidth = true;
@@ -25,11 +27,14 @@ public static class DataGridViewExtension
 
         view.Columns.AddRange(columns.ToArray());
         view.AutoFillColumn = columns[^1];
+
+        grid.EndUpdate();
     }
 
     private static GridColumn CreateColumn(VisualColumn visualColumn)
     {
         GridColumn gridColumn = new GridColumn();
+        gridColumn.Tag = visualColumn;
 
         if (visualColumn.FieldName != string.Empty)
         {
@@ -43,24 +48,42 @@ public static class DataGridViewExtension
         if (visualColumn.Format != null)
         {
             gridColumn.DisplayFormat.FormatString = visualColumn.Format;
-            gridColumn.DisplayFormat.FormatType = FormatType.DateTime;
+            gridColumn.DisplayFormat.FormatType = FormatType.Custom;
         }
-        gridColumn.AppearanceCell.TextOptions.HAlignment = visualColumn.ColumnType switch
-        {
-            ColumnType.Boolean => HorzAlignment.Center,
-            ColumnType.Byte => HorzAlignment.Far,
-            ColumnType.SByte => HorzAlignment.Far,
-            ColumnType.Single => HorzAlignment.Far,
-            ColumnType.Double => HorzAlignment.Far,
-            ColumnType.Int16 => HorzAlignment.Far,
-            ColumnType.Int32 => HorzAlignment.Far,
-            ColumnType.Int64 => HorzAlignment.Far,
-            ColumnType.UInt16 => HorzAlignment.Far,
-            ColumnType.UInt32 => HorzAlignment.Far,
-            ColumnType.UInt64 => HorzAlignment.Far,
-            _ => HorzAlignment.Near
-        };
 
         return gridColumn;
+    }
+
+    public static void SetColumnAlignment(this GridControl grid)
+    {
+        grid.BeginUpdate();
+        
+        GridView view = (GridView) grid.MainView;
+        foreach (GridColumn column in view.Columns)
+        {
+            VisualColumn visualColumn = column.Tag as VisualColumn;
+            if (visualColumn == null)
+                continue;
+
+            column.AppearanceCell.TextOptions.HAlignment = visualColumn.ColumnType switch
+            {
+                ColumnType.Boolean => HorzAlignment.Center,
+                ColumnType.Byte => HorzAlignment.Far,
+                ColumnType.SByte => HorzAlignment.Far,
+                ColumnType.Single => HorzAlignment.Far,
+                ColumnType.Double => HorzAlignment.Far,
+                ColumnType.Int16 => HorzAlignment.Far,
+                ColumnType.Int32 => HorzAlignment.Far,
+                ColumnType.Int64 => HorzAlignment.Far,
+                ColumnType.UInt16 => HorzAlignment.Far,
+                ColumnType.UInt32 => HorzAlignment.Far,
+                ColumnType.UInt64 => HorzAlignment.Far,
+                _ => HorzAlignment.Near
+            };
+
+            column.SortMode = ColumnSortMode.DisplayText;
+        }
+
+        grid.EndUpdate();
     }
 }

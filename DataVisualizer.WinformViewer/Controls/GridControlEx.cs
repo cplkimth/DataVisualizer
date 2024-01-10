@@ -37,45 +37,9 @@ using Color = System.Drawing.Color;
 
 namespace DataVisualizer.WinformViewer.Controls;
 
-public class GridControlEx : GridControl, ILayout
+public class GridControlEx : GridControl
 {
     public GridView GridView => MainView as GridView;
-
-    #region layout
-    public void SaveLayout(RootForm containerForm)
-    {
-        this.SaveLayout(containerForm, GridView.SaveLayoutToXml);
-    
-        this.SaveLayout(containerForm, SaveColumnColors);
-    }
-
-    public void SaveColumnColors(string path)
-    {
-        var colors = GridView.Columns.ToDictionary(x => x.Name, x => x.AppearanceHeader.BackColor.ToArgb());
-    
-        var json = JsonSerializer.Serialize(colors);
-        File.WriteAllText(path + ".json", json);
-    }
-    
-    public void RestoreLayout(RootForm containerForm)
-    {
-        this.RestoreLayout(containerForm, GridView.RestoreLayoutFromXml, ForceInitialize);
-    
-        this.RestoreLayout(containerForm, RestoreColumnColors);
-    }
-
-    public void RestoreColumnColors(string path)
-    {
-        // 알 수 없는 사각형이 그려지는 버그 있음
-    
-        var json = File.ReadAllText(path + ".json");
-        var colors = JsonSerializer.Deserialize<Dictionary<string, int>>(json);
-    
-        foreach (GridColumn column in GridView.Columns)
-            if (colors.TryGetValue(column.Name, out var color))
-                column.AppearanceHeader.BackColor = Color.FromArgb(color);
-    }
-    #endregion
 
     [Browsable(true)]
     [DefaultValue(false)]
@@ -114,11 +78,11 @@ public class GridControlEx : GridControl, ILayout
         GridView.OptionsPrint.AutoWidth = true;
         GridView.OptionsView.ColumnAutoWidth = true;
 
-        GridView.OptionsFind.ShowFindButton = false;
-        GridView.OptionsFind.ShowClearButton = false;
+        // GridView.OptionsFind.ShowFindButton = false;
+        // GridView.OptionsFind.ShowClearButton = false;
         GridView.OptionsFind.FindDelay = 500;
 
-        GridView.OptionsLayout.StoreDataSettings = true;
+        // GridView.OptionsLayout.StoreDataSettings = true;
 
         #region PDF 내보내기를 위해서는 한글폰트가 필요
         // PDF 내보내기를 위해서는 한글폰트가 필요            
@@ -192,7 +156,10 @@ public class GridControlEx : GridControl, ILayout
             for (int i = menu.Items.Count - 1; i >= 0; i--)
                 menu.Items.RemoveAt(i);
 
-            menu.Items.Add(CreateMenu("색상 지정", false, (_, _) => menu.Column.AppearanceHeader.BackColor = InputForm.InputColor() ?? Color.Empty));
+            menu.Items.Add(CreateMenu("그룹화", false, (_, _) => menu.Column.Group()));
+            menu.Items.Add(CreateMenu("그룹화 해제", false, (_, _) => menu.Column.UnGroup()));
+
+            menu.Items.Add(CreateMenu("색상 지정", true, (_, _) => menu.Column.AppearanceHeader.BackColor = InputForm.InputColor() ?? Color.Empty));
 
             menu.Items.Add(CreateMenu("색상 해제", false, (_, _) => menu.Column.AppearanceHeader.BackColor = Color.Transparent));
 
@@ -215,7 +182,7 @@ public class GridControlEx : GridControl, ILayout
 
             menu.Items.Add(CreateMenu("자동 너비 (전역)", true, (_, _) => BestFitAllColumns(!GridView.OptionsView.ColumnAutoWidth)));
             // menu.Items.Add(CreateMenu("컬럼 선택기", true, (_, _) => ShowColumnChooser()));
-            menu.Items.Add(CreateMenu("레이아웃 초기화", false, (_, _) => this.QueueGuidToDelete()));
+            // menu.Items.Add(CreateMenu("레이아웃 초기화", false, (_, _) => this.QueueGuidToDelete()));
 
             if (Unexportable == false)
             {

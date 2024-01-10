@@ -5,6 +5,7 @@ using DataVisualizer.Contract;
 using DataVisualizer.WinformViewer.Components;
 using DevExpress.Utils;
 using DevExpress.XtraBars.Docking2010.Views;
+using DevExpress.XtraGrid.Columns;
 using Newtonsoft.Json;
 #endregion
 
@@ -56,12 +57,14 @@ public partial class GridForm : RootForm
 
         var list = JsonConvert.DeserializeObject<List<dynamic>>(dataJson);
 
-        bdsList.DataSource = list;
-
         grdList.LoadPreset();
+
+        grdList.SetColumnAlignment();
 
         if (File.Exists(LayoutPath))
             RestoreGridLayout();
+
+        bdsList.DataSource = list;
     }
 
     protected override void OnClosing(CancelEventArgs e)
@@ -78,12 +81,12 @@ public partial class GridForm : RootForm
 
     private string LayoutPath => Path.Combine(MainForm.Instance.Folder, $"{TypeFullName}.xml");
 
-    public void SaveGridLayout()
+    private void SaveGridLayout()
     {
         grvList.SaveLayoutToXml(LayoutPath, OptionsLayoutBase.FullLayout);
     }
 
-    public void RestoreGridLayout()
+    private void RestoreGridLayout()
     {
         grvList.RestoreLayoutFromXml(LayoutPath, OptionsLayoutBase.FullLayout);
     }

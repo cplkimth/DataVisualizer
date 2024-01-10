@@ -32,16 +32,16 @@ public partial class MainForm : XtraForm
 #if DEBUG
         Folder = @"D:\incoming\DataVisualizer";
 #else
-Folder = @"D:\incoming\DataVisualizer";
-        // if (fbdDialog.ShowDialog() == DialogResult.OK)
-        // {
-        //     Folder = fbdDialog.SelectedPath;
-        // }
-        // else
-        // {
-        //     Close();
-        //     return;
-        // }
+// Folder = @"D:\incoming\DataVisualizer";
+        if (fbdDialog.ShowDialog() == DialogResult.OK)
+        {
+            Folder = fbdDialog.SelectedPath;
+        }
+        else
+        {
+            Close();
+            return;
+        }
 #endif
 
         string? latestFile = GetLatestFile();
