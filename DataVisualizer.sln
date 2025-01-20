@@ -8,6 +8,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataVisualizer.WinformViewe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataVisualizer.TestClient", "DataVisualizer.TestClient\DataVisualizer.TestClient.csproj", "{C0EB2518-43B8-49DE-A266-502B661F8242}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A55C9C49-51D8-4E94-BDFE-A159C2C090D1}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
