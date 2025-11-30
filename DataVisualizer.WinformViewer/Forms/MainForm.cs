@@ -1,11 +1,11 @@
 ﻿#region
 using System.IO;
-using DevExpress.XtraEditors;
+using System.Windows.Forms;
 #endregion
 
 namespace DataVisualizer.WinformViewer.Forms;
 
-public partial class MainForm : XtraForm
+public partial class MainForm : Form
 {
     #region singleton
 
