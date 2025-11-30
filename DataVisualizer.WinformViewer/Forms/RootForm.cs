@@ -1,8 +1,6 @@
 ﻿#region
 using System.ComponentModel;
-using DevExpress.Xpo.Helpers;
 using System.IO;
-using DevExpress.XtraEditors;
 using DataVisualizer.WinformViewer.Interfaces;
 #endregion
 
