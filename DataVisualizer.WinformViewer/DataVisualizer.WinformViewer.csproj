@@ -14,7 +14,7 @@
     <EmbeddedResource Remove="Form1.resx" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DevExpress.Win.Design" Version="24.2.3" />
+    <PackageReference Include="DevExpress.Win.Design" Version="25.1.6" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
   <ItemGroup>
