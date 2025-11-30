@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using DataVisualizer.WinformViewer.Interfaces;
+using DevExpress.XtraEditors;
 #endregion
 
 namespace DataVisualizer.WinformViewer.Forms;

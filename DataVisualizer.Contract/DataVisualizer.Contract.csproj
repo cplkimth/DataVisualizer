@@ -4,7 +4,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <Title>Data Visualizer</Title>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>cplkimth</Authors>
     <Description>Data Visualizer</Description>
     <PackageProjectUrl>https://github.com/cplkimth/DataVisualizer</PackageProjectUrl>

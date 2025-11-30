@@ -3,7 +3,7 @@ using System.Dynamic;
 using System.IO;
 using System.Text.Json;
 using DataVisualizer.Contract;
-using Library.Forms;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Newtonsoft.Json;
 
 namespace DataVisualizer.WinformViewer;
@@ -35,7 +35,7 @@ public partial class Form1 : Form
         var dataJson = tokens[1];
         
         var visualColumns = JsonConvert.DeserializeObject<List<VisualColumn>>(metaJson);
-        grid.Initialize(visualColumns!.ToArray());
+        // grid.Initialize(visualColumns!.ToArray());
 
         var list = JsonConvert.DeserializeObject<List<dynamic>>(dataJson);
 
