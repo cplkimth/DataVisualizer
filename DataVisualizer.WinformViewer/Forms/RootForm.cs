@@ -1,9 +1,8 @@
 ﻿#region
 using System.ComponentModel;
-using DevExpress.Xpo.Helpers;
 using System.IO;
-using DevExpress.XtraEditors;
 using DataVisualizer.WinformViewer.Interfaces;
+using DevExpress.XtraEditors;
 #endregion
 
 namespace DataVisualizer.WinformViewer.Forms;
