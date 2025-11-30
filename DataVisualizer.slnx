@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/files/">
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Project Path="DataVisualizer.Contract/DataVisualizer.Contract.csproj" />
+  <Project Path="DataVisualizer.TestClient/DataVisualizer.TestClient.csproj" />
+  <Project Path="DataVisualizer.WinformViewer/DataVisualizer.WinformViewer.csproj" />
+</Solution>
